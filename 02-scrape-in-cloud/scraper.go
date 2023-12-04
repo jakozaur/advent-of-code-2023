@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -8,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/gocolly/colly"
 
 	_ "github.com/libsql/libsql-client-go/libsql"
@@ -149,10 +151,25 @@ func UpdateDatabase(submissions []Submission) []Submission {
 	return newSubmissions
 }
 
-func main() {
+type MyEvent struct {
+	Name string `json:"name"`
+}
+
+func HandleRequest(ctx context.Context, event *MyEvent) (*string, error) {
+	if event == nil {
+		return nil, fmt.Errorf("received nil event")
+	}
+	message := fmt.Sprintln("event", event)
+
 	submissions := ScrapeHackerNews()
-	fmt.Println("submissions", submissions)
+	message += fmt.Sprintln("submissions", submissions)
 
 	newSubmissions := UpdateDatabase(submissions)
-	fmt.Println("newSubmissions", newSubmissions)
+	message += fmt.Sprintln("newSubmissions", newSubmissions)
+
+	return &message, nil
+}
+
+func main() {
+	lambda.Start(HandleRequest)
 }

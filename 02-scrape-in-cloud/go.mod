@@ -3,6 +3,7 @@ module scrape-hacker-news
 go 1.21.4
 
 require (
+	github.com/aws/aws-lambda-go v1.41.0
 	github.com/gocolly/colly v1.2.0
 	github.com/libsql/libsql-client-go v0.0.0-20231128153229-cb5832f4404f
 	modernc.org/sqlite v1.27.0
