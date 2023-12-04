@@ -4,4 +4,5 @@ A series of small programming exercises inspired by [Advent calendar](https://en
 
 Each project aims to be a small, but usable and pratical exercise.
 
-1. [Scrape Hacker News](01-scrape-hacker-news/README.md): A minimalistic scraper in Go of [news.ycombinator.com](https://news.ycombinator.com). 
+1. [Scrape Hacker News](01-scrape-hacker-news/README.md): A minimalistic scraper in Go of [news.ycombinator.com](https://news.ycombinator.com).
+2. [Deploy our scraper as lambda to AWS](02-scrape-in-cloud/README.md): It is time to deploy our mighty scraper to production.
