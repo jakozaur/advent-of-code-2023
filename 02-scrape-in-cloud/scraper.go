@@ -167,6 +167,9 @@ func HandleRequest(ctx context.Context, event *MyEvent) (*string, error) {
 	newSubmissions := UpdateDatabase(submissions)
 	message += fmt.Sprintln("newSubmissions", newSubmissions)
 
+	// Log message
+	fmt.Println(message)
+
 	return &message, nil
 }
 
