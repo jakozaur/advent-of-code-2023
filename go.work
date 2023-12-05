@@ -1,0 +1,7 @@
+go 1.21.4
+
+use (
+	./01-scrape-hacker-news
+	./02-scrape-in-cloud
+	./03-scrape-with-notifications
+)
