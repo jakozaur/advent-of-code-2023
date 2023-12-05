@@ -1,2 +1,4 @@
 .env
 hackernews.db
+bootstrap
+lambda-handler.zip

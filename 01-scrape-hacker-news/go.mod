@@ -1,4 +1,4 @@
-module scrape-hacker-news
+module 01-scrape-hacker-news
 
 go 1.21.4
 
