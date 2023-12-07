@@ -45,6 +45,9 @@ func main() {
 		},
 	)
 
+	fmt.Println("> OpenAI prompt:")
+	fmt.Println(prompt + createTableSql)
+
 	if err != nil {
 		fmt.Printf("ChatCompletion error: %v\n", err)
 		return

@@ -5,3 +5,7 @@
 export OPENAI_SECRET_KEY=...
 ```  
 
+2. Run it with:
+```
+go run generate.go
+```
