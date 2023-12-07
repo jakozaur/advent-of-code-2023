@@ -4,4 +4,5 @@ use (
 	./01-scrape-hacker-news
 	./02-scrape-in-cloud
 	./03-scrape-with-notifications
+	./05-sample-sql-data
 )
