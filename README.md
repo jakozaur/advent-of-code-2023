@@ -9,3 +9,4 @@ Each project aims to be a small, but usable and pratical exercise.
 3. [Add notifications to our scraper](03-scrape-with-notifications/README.md): The scraper worked well, it's time to add notifications.
 4. [Badge on my Rapsberry PI](03-badger-2040/README.md): Ventured into hardware and created custom badge for conference.
 5. [Generate sample data in SQL using LLM](05-sample-sql-data/README.md): Time for AI. LLM that will generate sample data in SQL.
+6. [Generate sample data in SQL, but autodetect schema](06-sample-autogenerate-sql-data/README.md): Extension of above project. This time use data as sample.

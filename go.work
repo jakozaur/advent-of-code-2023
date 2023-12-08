@@ -5,4 +5,5 @@ use (
 	./02-scrape-in-cloud
 	./03-scrape-with-notifications
 	./05-sample-sql-data
+	./06-sample-autogenerate-sql-data
 )
