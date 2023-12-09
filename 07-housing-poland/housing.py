@@ -30,7 +30,7 @@ def price_to_int(raw_price):
         return 0
 
 # Data: https://static.nbp.pl/dane/rynek-nieruchomosci/ceny_mieszkan.xlsx
-housing_primary = pd.read_csv("data/housing_primary.csv", sep=";", skiprows=6, usecols=range(23, 41)) # 44 if averages
+housing_primary = pd.read_csv("07-housing-poland/data/housing_primary.csv", sep=";", skiprows=6, usecols=range(23, 41)) # 44 if averages
 housing_primary.rename(lambda x: str(x).split('.')[0].split("*")[0], axis='columns', inplace=True)
 housing_primary.rename({'Kwartał': DATE_COLUMN}, axis='columns', inplace=True)
 housing_primary[DATE_COLUMN] = housing_primary[DATE_COLUMN].apply(quarter_to_date)
@@ -48,7 +48,7 @@ st.line_chart(housing_primary)
 
 # Data: https://bdl.stat.gov.pl/bdl/dane/podgrup/tablica
 # 	K40	WYNAGRODZENIA I ŚWIADCZENIA SPOŁECZNE  / 	G403	WYNAGRODZENIA 2497	Przeciętne miesięczne wynagrodzenia brutto   
-salaries = pd.read_csv("data/salaries_2022.csv", sep=";", usecols=[1, 2])
+salaries = pd.read_csv("07-housing-poland/data/salaries_2022.csv", sep=";", usecols=[1, 2])
 salaries['Nazwa'] = salaries['Nazwa'].apply(lambda x: x.split('.')[-1].strip())
 salaries.set_index('Nazwa', inplace=True)
 salaries.sort_values('Nazwa', inplace=True)
