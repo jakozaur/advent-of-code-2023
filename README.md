@@ -10,4 +10,5 @@ Each project aims to be a small, but usable and pratical exercise.
 4. [Badge on my Rapsberry PI](03-badger-2040/README.md): Ventured into hardware and created custom badge for conference.
 5. [Generate sample data in SQL using LLM](05-sample-sql-data/README.md): Time for AI. LLM that will generate sample data in SQL.
 6. [Generate sample data in SQL, but autodetect schema](06-sample-autogenerate-sql-data/README.md): Extension of above project. This time use data as sample.
-6. [Housing Poland](07-housing-poland/README.md): Implement a Streamlit app. Simulation of housing affordability in Poland.
+7. [Housing Poland](07-housing-poland/README.md): Implement a Streamlit app. Simulation of housing affordability in Poland.
+8. [Fix Housing in Poland](08-fix-housing-in-poland/README.md): Another Streamlit up, this time simulate what it would take to fix it.
