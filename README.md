@@ -12,3 +12,4 @@ Each project aims to be a small, but usable and pratical exercise.
 6. [Generate sample data in SQL, but autodetect schema](06-sample-autogenerate-sql-data/README.md): Extension of above project. This time use data as sample.
 7. [Housing Poland](07-housing-poland/README.md): Implement a Streamlit app. Simulation of housing affordability in Poland.
 8. [Fix Housing in Poland](08-fix-housing-in-poland/README.md): Another Streamlit up, this time simulate what it would take to fix it.
+9. [Default alive](09-default-alive/README.md): The first rule of business is not to run out of money.
