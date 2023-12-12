@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Happy Hanukkah</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="candleCanvas" width="1024" height="800"></canvas>
+  <h1>Happy Hanukkah!</h1>
+  <h2>You are always welcomed in Poland.</h2>
+  <p>Create by <a href="">Jacek Migdal</a> Advent of Code, <a href="">day 10.</a></p>
+
+  <script>
+    var canvas = document.getElementById('candleCanvas');
+    var ctx = canvas.getContext('2d');
+
+    function drawCandle(topX, topY, candleWidth, candleHeight, withFlame = true) {
+      // Candle Body
+      ctx.fillStyle = '#FFD700'; // Gold color
+      ctx.fillRect(topX - candleWidth / 2, topY, candleWidth, candleHeight); // x, y, width, height
+
+      // Candle Wick
+      const wickWidth = 4;
+      const wickHeight = 10;
+      ctx.fillStyle = '#000000'; // Black color
+      ctx.fillRect(topX - wickWidth / 2, topY - wickHeight, wickWidth, wickHeight); // x, y, width, height
+
+      // Flame
+      const flameHeight = 40;
+      const flameWidth = 20;
+      if (withFlame) {
+        ctx.beginPath();
+        ctx.moveTo(topX, topY - wickHeight);
+        ctx.quadraticCurveTo(topX + flameWidth / 2, topY - wickHeight - flameHeight / 2, topX, topY - wickHeight - flameHeight);
+        ctx.quadraticCurveTo(topX - flameWidth / 2, topY - wickHeight - flameHeight / 2, topX, topY - wickHeight);
+        ctx.fillStyle = 'orange';
+        ctx.fill();
+      }
+    }
+
+    function getHanukkahDay() {
+      // Pre-calculated Hanukkah start dates for specific years
+      const hanukkahStartDates = {
+        2023: { month: 12, day: 7 },
+        2024: { month: 11, day: 25 },
+        2025: { month: 12, day: 14 },
+        // Add more years as needed
+      };
+
+      var today = new Date();
+      var year = today.getFullYear(); // Gets the current year
+      var month = today.getMonth() + 1; // Gets the month (0-11, where 0 is January and 11 is December)
+      var day = today.getDate(); // Gets the day of the month
+
+      // Check if the year is in the pre-calculated list
+      if (!hanukkahStartDates[year]) {
+        return 0;
+        //return "Hanukkah start date not available for year " + year;
+      }
+
+      const start = hanukkahStartDates[year];
+      const startDate = new Date(year, start.month - 1, start.day);
+      const currentDate = new Date(year, month - 1, day);
+
+      // Calculate the difference in days
+      const diff = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
+
+      if (diff >= 0 && diff < 8) {
+        return diff;
+        //return "It's day " + (diff + 1) + " of Hanukkah.";
+      } else {
+        return 0;
+        //return "It's not Hanukkah.";
+      }
+    }
+
+    let hDay = getHanukkahDay();
+    console.log("Hannukah day", hDay);
+
+    if (hDay > 0) {
+      for (var i = 0; i < 9; i++) {
+        let hDayTemp = hDay + (hDay >= 5 ? 1 : 0);
+        if (i == 4 || i >= 9 - hDayTemp) {
+          drawCandle(100 + i * 100, 100, 50, 150); // x, y, width, height of the candle
+        }
+      }
+    }
+
+    console.log("Fill");
+
+    // draw base
+    ctx.fillStyle = '#8B4513'; // SaddleBrown color
+    ctx.strokeStyle = '#8B4513'; // SaddleBrown color
+    ctx.lineWidth = 50;
+    for (var i = 0; i < 9; i++) {
+      if (i == 4) {
+        ctx.fillRect(50 + 400, 250, 100, 500); // x, y, width, height
+      } else {
+        let dist = Math.abs(4 - i);
+        ctx.beginPath();
+        if (i < 4) {
+          ctx.arc(50 + 400, 250 + 50, 100 * dist - 50, Math.PI, Math.PI * 0.5, true);
+        } else {
+          ctx.arc(150 + 400, 250 + 50, 100 * dist - 50, Math.PI * 0.5, Math.PI * 2, true);
+        }
+        ctx.stroke();
+      }
+      ctx.fillRect(70 + i * 100, 250, 60, 50); // x, y, width, height
+    }
+    ctx.fillRect(400, 750, 200, 20);
+
+
+  </script>
+
+</body>
+
+</html>

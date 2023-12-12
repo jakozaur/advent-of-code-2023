@@ -13,3 +13,4 @@ Each project aims to be a small, but usable and pratical exercise.
 7. [Housing Poland](07-housing-poland/README.md): Implement a Streamlit app. Simulation of housing affordability in Poland.
 8. [Fix Housing in Poland](08-fix-housing-in-poland/README.md): Another Streamlit up, this time simulate what it would take to fix it.
 9. [Default alive](09-default-alive/README.md): The first rule of business is not to run out of money.
+10. [Happy Hanukkah](10-happy-hanukkah/index.html): Let's celeberate Hanukkah with HTML and Canvas drawing.
