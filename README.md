@@ -14,3 +14,4 @@ Each project aims to be a small, but usable and pratical exercise.
 8. [Fix Housing in Poland](08-fix-housing-in-poland/README.md): Another Streamlit up, this time simulate what it would take to fix it.
 9. [Default alive](09-default-alive/README.md): The first rule of business is not to run out of money.
 10. [Happy Hanukkah](https://jacek.migdal.pl/resources/happy-hanukkah/): Let's celeberate Hanukkah with HTML and Canvas drawing.
+11. [Draw with AI](11-draw-with-ai/README.md): AI will draw on HTML canvas with you.

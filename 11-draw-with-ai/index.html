@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Draw with AI</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+
+    td {
+      vertical-align: top;
+    }
+
+    #question {
+      width: 400px;
+      height: 40px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Draw with AI!</h1>
+  <form id="apiForm" onsubmit="onApiFormSubmit(event)">
+    <label for="apiKey">OpenAI API Key (<a href="https://platform.openai.com/api-keys">generate)</a>:</label>
+    <input type="password" id="apiKey" name="apiKey"><br><br>
+    <label for="What AI should draw for you?">Draw with me:</label><br>
+    <textarea type="text" id="question" name="question"></textarea><br>
+    <input type="submit" value="Ask AI to draw">
+  </form>
+  <table>
+    <thead>
+      <tr>
+        <th>Canvas</th>
+        <th>AI Answers</th>
+      </tr>
+    <tbody>
+      <tr>
+        <td>
+          <canvas id="canvas" width="800" height="800"></canvas>
+        </td>
+        <td>
+          <ul id="answers">
+
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <script>
+    // preserve OpenAI Key across refreshes.
+    let openAIKey = sessionStorage.getItem('openAIKey');
+    let chatMessaage = sessionStorage.getItem('chatMessaage');
+    if (openAIKey) {
+      document.getElementById('apiKey').value = openAIKey;
+    }
+    if (chatMessaage) {
+      document.getElementById('question').value = chatMessaage;
+    }
+
+    document.getElementById('question').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Prevents the default action of the Enter key (new line)
+        //this.form.submit(); // Submits the form
+        onApiFormSubmit(event);
+      }
+    });
+
+    //var canvas = document.getElementById('canvas');
+    //var ctx = canvas.getContext('2d');
+    let requestInProgress = false;
+
+    let prompt = `
+      You are helpful assistant who helps people to draw.
+      You want to draw question in HTML canvas 800x800px.
+      The canvas context will be available to you in as 'ctx' variable.
+      Please response just with JavaScript code that would draw the question and nothing else. 
+      `.trim();
+    let messageHistory = [
+      {
+        role: "system",
+        content: prompt
+      }
+    ];
+
+    function onApiFormSubmit(event) {
+      event.preventDefault();
+      if (requestInProgress) {
+        alert('Please wait for the previous request to finish.');
+        return;
+      }
+      requestInProgress = true;
+
+      let openAIKey = document.getElementById('apiKey').value;
+      if (!openAIKey.startsWith("sk-")) {
+        alert('Please enter your OpenAI API key. It usually starts with sk-');
+        return;
+      }
+      sessionStorage.setItem('openAIKey', openAIKey);
+
+      let question = document.getElementById('question').value;
+      sessionStorage.setItem('chatMessaage', question);
+
+
+
+      console.log("Asking OpenAI:", question);
+      messageHistory.push({
+        role: "user",
+        content: question
+      });
+
+      fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: messageHistory
+        }),
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        console.log("Got OpenAI response:", response);
+        let answer = response.choices[0].message.content;
+        messageHistory.push({
+          role: "system",
+          content: answer
+        });
+        if (answer.includes("```javascript")) {
+          console.log("Trimming description", answer);
+          answer = answer.split("```javascript")[1];
+          console.log("Trimming description", answer);
+          answer = answer.split("```")[0];
+        }
+        console.log("Got OpenAI response content:", answer);
+
+        // Append it to HTML
+        let newItem = document.createElement('li');
+        let questionParagraph = document.createElement('p');
+        questionParagraph.textContent = question;
+        let codeBlock = document.createElement('pre');
+        codeBlock.textContent = answer;
+        newItem.appendChild(questionParagraph);
+        newItem.appendChild(codeBlock);
+        document.getElementById('answers').appendChild(newItem);
+
+        // Run it:
+        try {
+          let canvas = document.getElementById('canvas');
+          let ctx = canvas.getContext('2d');
+          eval(answer);
+        } catch (e) {
+          console.error("Error while evaluating OpenAI response:", e);
+        }
+        //response.json();
+      }).catch(error => {
+        console.error('Error:', error);
+      }).finally(() => {
+        requestInProgress = false;
+      });
+
+
+    }
+  </script>
+</body>
+
+</html>
