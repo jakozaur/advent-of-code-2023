@@ -16,4 +16,6 @@ Each project aims to be a small, but usable and pratical exercise.
 10. [Happy Hanukkah](https://jacek.migdal.pl/resources/happy-hanukkah/): Let's celeberate Hanukkah with HTML and Canvas drawing.
 11. [Draw with AI](11-draw-with-ai/README.md): AI will draw on HTML canvas with you.
 12. [Section 174](12-section-174/README.md): A painful tax change in the USA tax code for innovative R&D heavy companies.
+13. [Advent classic](13-advent-classic/README.md): Solving one puzzle from original advent of code.
+
 
