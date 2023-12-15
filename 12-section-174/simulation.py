@@ -41,17 +41,22 @@ usa_tax_rate = 21
 if st.checkbox("Show details"):
   st.text("Your taxable income starting from 2022: ${new_taxable_income:.1f}k".format(**locals()))
   st.text("It used to be: ${old_taxable_income:.1f}k".format(**locals()))
-  st.text("So you will have to pay taxes on your new 'profit': ${difference:.1f}k".format(**locals()))
+  st.text("So you will have to pay taxes on your new 'fake profit': ${difference:.1f}k".format(**locals()))
 
   usa_tax_rate = st.slider("USA corporate income tax rate", usa_tax_rate, 21 + 12, usa_tax_rate, format="%d %%")
 
 more_tax = difference * usa_tax_rate / 100
 
-st.text("Your extra tax liability for 2022 is: ${more_tax:.1f}k".format(**locals()))
+st.markdown("Your extra tax liability for 'fake profit' in 2022 is:  **:red[${more_tax:.1f}k]**".format(**locals()))
 
 if more_tax > 0 and profit < 0:
   st.error("Even though you are not profitable.")
 
+  if st.checkbox("LLC partnership mode"):
+    st.text("This year, LLC will distribute tax liabilities instead of distributing profits.")
+    ownership = st.slider("Youw owneship share", 0, 100, 45, format="%d %%")
+    tax_for_you = ownership * more_tax / 100
+    st.markdown("Your extra tax liability for 'fake profit' as a shareholder:  **:red[${tax_for_you:.1f}k]**".format(**locals()))
 
 st.markdown("""
 By [Jacek Migdal](https://twitter.com/jakozaur).
