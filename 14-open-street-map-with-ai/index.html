@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Simple Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Link to Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+  <style>
+    #mapid {
+      height: 800px;
+      width: 800px;
+    }
+
+    td {
+      vertical-align: top;
+    }
+
+    #question {
+      width: 400px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Open Street Maps with AI!</h1>
+  <form id="apiForm" onsubmit="onApiFormSubmit(event)">
+    <label for="apiKey">OpenAI API Key (<a href="https://platform.openai.com/api-keys">generate)</a>:</label>
+    <input type="password" id="apiKey" name="apiKey"><br><br>
+    <label for="What AI should do on map with you?">Ask AI to change OpenStreetMap with me:</label><br>
+    <textarea type="text" id="question" name="question"></textarea><br>
+    <input type="submit" value="Ask AI">
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Map</th>
+        <th>AI Answers</th>
+      </tr>
+    <tbody>
+      <tr>
+        <td>
+          <div id="mapid"></div>
+        </td>
+        <td>
+          <ul id="answers">
+
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Link to Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+
+  <script>
+    let mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap);
+
+    // preserve OpenAI Key across refreshes.
+    let openAIKey = sessionStorage.getItem('openAIKey');
+    let chatMessaage = sessionStorage.getItem('chatMessaage');
+    if (openAIKey) {
+      document.getElementById('apiKey').value = openAIKey;
+    }
+    if (chatMessaage) {
+      document.getElementById('question').value = chatMessaage;
+    }
+
+    document.getElementById('question').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Prevents the default action of the Enter key (new line)
+        //this.form.submit(); // Submits the form
+        onApiFormSubmit(event);
+      }
+    });
+
+    let requestInProgress = false;
+
+    let prompt = `
+      You are helpful assistant who helps people to use OpenStreet Maps using Leaflet library.
+      You want to help people with map API (e.g. move map or add markers).
+      Leaaflet is available as 'L' and OpenStreetMap is available as 'mymap'.
+      Please response just with JavaScript code that would do the logic and nothing else.
+      `.trim();
+    let messageHistory = [
+      {
+        role: "system",
+        content: prompt
+      }
+    ];
+
+    function onApiFormSubmit(event) {
+      event.preventDefault();
+      let openAIKey = document.getElementById('apiKey').value;
+      if (!openAIKey.startsWith("sk-")) {
+        alert('Please enter your OpenAI API key. It usually starts with sk-');
+        return;
+      }
+
+      if (requestInProgress) {
+        alert('Please wait for the previous request to finish.');
+        return;
+      }
+      requestInProgress = true;
+
+      sessionStorage.setItem('openAIKey', openAIKey);
+
+      let question = document.getElementById('question').value;
+      sessionStorage.setItem('chatMessaage', question);
+
+
+
+      console.log("Asking OpenAI:", question);
+      messageHistory.push({
+        role: "user",
+        content: question
+      });
+
+      fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: messageHistory
+        }),
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        console.log("Got OpenAI response:", response);
+        let answer = response.choices[0].message.content;
+        messageHistory.push({
+          role: "system",
+          content: answer
+        });
+        if (answer.includes("```javascript")) {
+          console.log("Trimming description", answer);
+          answer = answer.split("```javascript")[1];
+          console.log("Trimming description", answer);
+          answer = answer.split("```")[0];
+        }
+        console.log("Got OpenAI response content:", answer);
+
+        // Append it to HTML
+        let newItem = document.createElement('li');
+        let questionParagraph = document.createElement('p');
+        questionParagraph.textContent = question;
+        let codeBlock = document.createElement('pre');
+        codeBlock.textContent = answer;
+        newItem.appendChild(questionParagraph);
+        newItem.appendChild(codeBlock);
+        document.getElementById('answers').appendChild(newItem);
+
+        // Run it:
+        try {
+          eval(answer);
+        } catch (e) {
+          console.error("Error while evaluating OpenAI response:", e);
+        }
+        //response.json();
+      }).catch(error => {
+        console.error('Error:', error);
+      }).finally(() => {
+        requestInProgress = false;
+      });
+
+
+    }
+  </script>
+</body>
+
+</html>
