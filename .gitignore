@@ -4,3 +4,4 @@ bootstrap
 lambda-handler.zip
 *.db
 venv
+*.input

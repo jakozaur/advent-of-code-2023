@@ -19,5 +19,6 @@ Each project aims to be a small, but usable and pratical exercise.
 13. [Advent classic](13-advent-classic/README.md): Solving one puzzle from original advent of code.
 14. [OpenStreetMap with AI](14-open-street-map-with-ai/README.md): Play with OpenStreetMap API using OpenAI.
 15. [Advent classic day 2](15-advent-classic-2/README.md): Solving day two puzzle from original advent of code.
+16. [Advent classic day 3](16-advent-classic-3/README.md): Solving day three puzzle from original advent of code.
 
 
