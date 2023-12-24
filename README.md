@@ -25,6 +25,8 @@ Each project aims to be a small, but usable and pratical exercise.
 19. [Advent classic day 6](19-advent-classic-6/README.md): Solving day six puzzle from original advent of code.
 20. [Advent classic day 7](20-advent-classic-7/README.md): Solving day seven puzzle from original advent of code.
 21. [Advent classic day 8](21-advent-classics/README.md): Solving day eight puzzle from original advent of code.
+22. [Advent classic day 9 and 10](22-advent-classics/README.md): Solving day nine and ten puzzle from original advent of code.
+
 
 
 
